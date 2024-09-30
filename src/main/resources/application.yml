@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: Whimee
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8888
+  tomcat:
+    relaxed-query-chars: "|,{,},[,]"
