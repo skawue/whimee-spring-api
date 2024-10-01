@@ -6,6 +6,5 @@ import skw.startup.whimee.domain.entity.UserEntity
 
 @Repository
 interface UserRepository : CrudRepository<UserEntity, Long> {
-
     fun findByLogin(login: String): UserEntity?
 }

@@ -29,6 +29,7 @@ class SecurityConfig {
                 it.requestMatchers("/events").permitAll()
                 it.requestMatchers(HttpMethod.GET, "/event").permitAll()
                 it.requestMatchers(HttpMethod.GET, "/user").permitAll()
+                it.requestMatchers(HttpMethod.GET, "/userExists").permitAll()
                 it.anyRequest().authenticated()
             }
             .sessionManagement {

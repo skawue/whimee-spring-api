@@ -16,3 +16,7 @@ server:
   port: 8888
   tomcat:
     relaxed-query-chars: "|,{,},[,]"
+
+whimee:
+  jwt-secret: 2ba7b9de4ae0bce13ea08c06e162fdc6bc2abb84ad8fe06b6805fb4b541eb669
+  jwt-expiration: 86400000

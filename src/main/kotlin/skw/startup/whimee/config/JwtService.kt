@@ -9,7 +9,7 @@ import java.util.*
 import javax.crypto.SecretKey
 
 @Service
-class JwtService {
+class JwtService(val envConfig: EnvConfig) {
     fun getLoginFromToken(jwtToken: String): String {
         return extractClaim(jwtToken, Claims::getSubject)
     }
@@ -23,7 +23,7 @@ class JwtService {
             .claims(extraClaims)
             .subject(userDetails.username)
             .issuedAt(Date(System.currentTimeMillis()))
-            .expiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+            .expiration(Date(System.currentTimeMillis() + envConfig.jwtExpiration))
             .signWith(getSignInKey())
             .compact()
     }
@@ -51,12 +51,8 @@ class JwtService {
     }
 
     private fun getSignInKey(): SecretKey {
-        val keyBytes = SECRET_KEY.toByteArray()
+        val keyBytes = envConfig.jwtSecret.toByteArray()
 
         return Keys.hmacShaKeyFor(keyBytes)
-    }
-
-    companion object {
-        private const val SECRET_KEY = "4b5144683670566f61454f466733574d7533683865684f574f4a5156774b544b"
     }
 }

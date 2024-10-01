@@ -15,10 +15,9 @@ class AuthService(
     val jwtService: JwtService,
     val authenticationManager: AuthenticationManager
 ) {
-
     fun register(request: RegisterRequest): AuthResponse {
         val user = UserEntity(
-            name = request.name,
+            name = request.login,
             login = request.login,
             password = passwordEncoder.encode(request.password)
         )
@@ -38,12 +37,6 @@ class AuthService(
         }
 
         val user = userRepository.findByLogin(request.login) ?: throw RuntimeException("User not found")
-//        val encodedPassword = passwordEncoder.encode(request.password)
-
-//        if (!passwordEncoder.matches(encodedPassword, user.password)) {
-//            throw RuntimeException("Invalid password")
-//        }
-
         val jwtToken = jwtService.generateToken(user)
 
         return AuthResponse(jwtToken)

@@ -5,6 +5,7 @@ import skw.startup.whimee.domain.entity.UserEntity
 interface UserService {
 
     fun createUser(userEntity: UserEntity): UserEntity
+    fun getUserByLogin(login: String): UserEntity?
     fun getAllUsers(): List<UserEntity>
     fun getUser(userId: Long): UserEntity?
     fun updateUser(userEntity: UserEntity): UserEntity

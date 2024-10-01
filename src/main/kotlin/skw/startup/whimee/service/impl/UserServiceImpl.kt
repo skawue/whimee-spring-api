@@ -13,6 +13,10 @@ class UserServiceImpl(val userRepository: UserRepository) : UserService {
         return userRepository.save(userEntity)
     }
 
+    override fun getUserByLogin(login: String): UserEntity? {
+        return userRepository.findByLogin(login)
+    }
+
     override fun getAllUsers(): List<UserEntity> {
         return userRepository.findAll().toList()
     }

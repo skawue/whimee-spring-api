@@ -22,6 +22,17 @@ class UserController(val userService: UserService) {
         }
     }
 
+    @GetMapping(path = ["/userExists"])
+    fun checkIfUserExists(@RequestParam(name = "login") login: String): ResponseEntity<Boolean> {
+        try {
+            val entity = userService.getUserByLogin(login)
+
+            return ResponseEntity(entity != null, HttpStatus.OK)
+        } catch (ex: Exception) {
+            throw (ex)
+        }
+    }
+
     @GetMapping(path = ["/user"])
     fun getUser(@RequestParam(name = "userId") userId: Long): ResponseEntity<UserDto> {
         try {

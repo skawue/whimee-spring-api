@@ -19,8 +19,8 @@ class JwtAuthFilter(val jwtService: JwtService, val userDetailsService: UserDeta
         filterChain: FilterChain
     ) {
         val authHeader = request.getHeader("Authorization")
-        var jwtToken: String = ""
-        var login: String = ""
+        var jwtToken = ""
+        var login = ""
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response)
