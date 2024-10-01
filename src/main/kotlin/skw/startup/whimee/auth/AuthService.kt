@@ -2,6 +2,7 @@ package skw.startup.whimee.auth
 
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import skw.startup.whimee.config.JwtService
@@ -15,26 +16,36 @@ class AuthService(
     val jwtService: JwtService,
     val authenticationManager: AuthenticationManager
 ) {
-    fun register(request: RegisterRequest): AuthResponse {
-        val user = UserEntity(
+    fun join(request: JoinRequest): AuthResponse {
+        return try {
+            tryLogin(request)
+        } catch (ex: AuthenticationException) {
+            tryRegister(request)
+        }
+    }
+
+    private fun tryRegister(request: JoinRequest): AuthResponse {
+        val user = userRepository.findByLogin(request.login)
+
+        if (user != null) {
+            throw RuntimeException("User already exists")
+        }
+
+        val newUser = UserEntity(
             name = request.login,
             login = request.login,
             password = passwordEncoder.encode(request.password)
         )
 
-        userRepository.save(user)
+        userRepository.save(newUser)
 
-        val jwtToken = jwtService.generateToken(user)
+        val jwtToken = jwtService.generateToken(newUser)
 
         return AuthResponse(jwtToken)
     }
 
-    fun login(request: AuthRequest): AuthResponse {
-        try {
-            authenticationManager.authenticate(UsernamePasswordAuthenticationToken(request.login, request.password))
-        } catch (ex: Exception) {
-            throw RuntimeException("Authentication failed", ex)
-        }
+    private fun tryLogin(request: JoinRequest): AuthResponse {
+        authenticationManager.authenticate(UsernamePasswordAuthenticationToken(request.login, request.password))
 
         val user = userRepository.findByLogin(request.login) ?: throw RuntimeException("User not found")
         val jwtToken = jwtService.generateToken(user)

@@ -27,6 +27,8 @@ class EventController(val eventService: EventService) {
 
             return ResponseEntity(EventDto(entity), HttpStatus.CREATED)
         } catch (ex: Exception) {
+            println("POST /event -> " + ex.message)
+
             throw (ex)
         }
     }
@@ -65,6 +67,8 @@ class EventController(val eventService: EventService) {
 
             return ResponseEntity(entities.map { EventDto(it) }, HttpStatus.OK)
         } catch (ex: Exception) {
+            println("GET /events -> " + ex.message)
+
             throw (ex)
         }
     }
@@ -79,6 +83,8 @@ class EventController(val eventService: EventService) {
             } ?: throw ChangeSetPersister.NotFoundException()
 
         } catch (ex: Exception) {
+            println("GET /event -> " + ex.message)
+
             throw (ex)
         }
     }

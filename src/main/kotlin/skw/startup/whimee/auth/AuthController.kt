@@ -10,24 +10,15 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/auth")
 class AuthController(val authService: AuthService) {
 
-    @PostMapping("/register")
-    fun register(@RequestBody request: RegisterRequest): ResponseEntity<AuthResponse> {
+    @PostMapping("/join")
+    fun join(@RequestBody request: JoinRequest): ResponseEntity<AuthResponse> {
         try {
-            val response = authService.register(request)
+            val response = authService.join(request)
 
             return ResponseEntity.ok(response)
         } catch (ex: Exception) {
-            return ResponseEntity.badRequest().build()
-        }
-    }
+            println("POST /join -> " + ex.message)
 
-    @PostMapping("/login")
-    fun login(@RequestBody request: AuthRequest): ResponseEntity<AuthResponse> {
-        try {
-            val response = authService.login(request)
-
-            return ResponseEntity.ok(response)
-        } catch (ex: Exception) {
             return ResponseEntity.badRequest().build()
         }
     }

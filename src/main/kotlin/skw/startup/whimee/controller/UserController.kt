@@ -18,6 +18,8 @@ class UserController(val userService: UserService) {
 
             return ResponseEntity(UserDto(entity), HttpStatus.CREATED)
         } catch (ex: Exception) {
+            println("POST /user -> " + ex.message)
+
             throw (ex)
         }
     }
@@ -29,6 +31,8 @@ class UserController(val userService: UserService) {
 
             return ResponseEntity(entity != null, HttpStatus.OK)
         } catch (ex: Exception) {
+            println("GET /userExists -> " + ex.message)
+
             throw (ex)
         }
     }
@@ -43,6 +47,8 @@ class UserController(val userService: UserService) {
             } ?: throw NotFoundException()
 
         } catch (ex: Exception) {
+            println("GET /user -> " + ex.message)
+
             throw (ex)
         }
     }
@@ -65,6 +71,8 @@ class UserController(val userService: UserService) {
             }
 
         } catch (ex: Exception) {
+            println("PUT /user/{userId} -> " + ex.message)
+
             throw (ex)
         }
     }
